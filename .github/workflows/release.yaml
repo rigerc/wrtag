@@ -50,6 +50,10 @@ jobs:
         exclude:
           - os: darwin
             arch: 386
+        include:
+          - os: linux
+            arch: arm
+            arm_version: 7
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -60,11 +64,23 @@ jobs:
       - name: Build
         run: |
           set -e
-          CGO_ENABLED=0 GOOS="${{ matrix.os }}" GOARCH="${{ matrix.arch }}" go build -o out/ ./cmd/...
+          export CGO_ENABLED=0
+          export GOOS="${{ matrix.os }}"
+          export GOARCH="${{ matrix.arch }}"
+          
+          # Set GOARM for ARM v7
+          if [[ "${{ matrix.arch }}" == "arm" ]]; then
+            export GOARM="${{ matrix.arm_version }}"
+            arch_suffix="armv${{ matrix.arm_version }}"
+          else
+            arch_suffix="${{ matrix.arch }}"
+          fi
+          
+          go build -o out/ ./cmd/...
           [[ "${{ matrix.os }}" = "windows" ]] && suff=".exe"
           cd out/
           for p in *; do
-              mv "$p" "${p%.*}-${{ matrix.os }}-${{ matrix.arch }}-${{ needs.release-please.outputs.tag_name }}$suff"
+              mv "$p" "${p%.*}-${{ matrix.os }}-${arch_suffix}-${{ needs.release-please.outputs.tag_name }}$suff"
           done
           cd -
       - name: Upload
