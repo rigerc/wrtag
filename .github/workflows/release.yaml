@@ -90,3 +90,117 @@ jobs:
           file: out/*
           file_glob: true
           tag: ${{ needs.release-please.outputs.tag_name }}
+  publish-packages:
+    name: Publish GitHub Packages
+    runs-on: ubuntu-latest
+    needs: [release-please]
+    if: ${{ needs.release-please.outputs.release_created }}
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        os: [linux, windows, darwin]
+        arch: [amd64, arm64, 386]
+        exclude:
+          - os: darwin
+            arch: 386
+        include:
+          - os: linux
+            arch: arm
+            arm_version: 7
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Golang with cache
+        uses: magnetikonline/action-golang-cache@v5
+        with:
+          go-version-file: go.mod
+      - name: Build binary
+        run: |
+          set -e
+          export CGO_ENABLED=0
+          export GOOS="${{ matrix.os }}"
+          export GOARCH="${{ matrix.arch }}"
+          
+          # Set GOARM for ARM v7
+          if [[ "${{ matrix.arch }}" == "arm" ]]; then
+            export GOARM="${{ matrix.arm_version }}"
+            arch_suffix="armv${{ matrix.arm_version }}"
+          else
+            arch_suffix="${{ matrix.arch }}"
+          fi
+          
+          # Build the binary
+          go build -o app ./cmd/...
+      - name: Determine platform
+        id: platform
+        run: |
+          os="${{ matrix.os }}"
+          arch="${{ matrix.arch }}"
+          
+          # Map Go OS to Docker platform
+          case "$os" in
+            linux) docker_os="linux" ;;
+            darwin) docker_os="linux" ;;  # macOS binaries in Linux containers
+            windows) docker_os="windows" ;;
+          esac
+          
+          # Map Go arch to Docker arch
+          case "$arch" in
+            amd64) docker_arch="amd64" ;;
+            arm64) docker_arch="arm64" ;;
+            386) docker_arch="386" ;;
+            arm) docker_arch="arm/v${{ matrix.arm_version }}" ;;
+          esac
+          
+          # Set platform tag suffix
+          if [[ "$arch" == "arm" ]]; then
+            tag_suffix="${os}-armv${{ matrix.arm_version }}"
+          else
+            tag_suffix="${os}-${arch}"
+          fi
+          
+          echo "platform=${docker_os}/${docker_arch}" >> $GITHUB_OUTPUT
+          echo "tag_suffix=${tag_suffix}" >> $GITHUB_OUTPUT
+      - name: Create Dockerfile
+        run: |
+          if [[ "${{ matrix.os }}" == "windows" ]]; then
+            cat > Dockerfile <<EOF
+          FROM mcr.microsoft.com/windows/nanoserver:ltsc2022
+          COPY app.exe /app.exe
+          ENTRYPOINT ["/app.exe"]
+          EOF
+          else
+            cat > Dockerfile <<EOF
+          FROM scratch
+          COPY app /app
+          ENTRYPOINT ["/app"]
+          EOF
+          fi
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=raw,value=${{ needs.release-please.outputs.tag_name }}-${{ steps.platform.outputs.tag_suffix }}
+            type=raw,value=latest-${{ steps.platform.outputs.tag_suffix }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: ${{ steps.platform.outputs.platform }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
