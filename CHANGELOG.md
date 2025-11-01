@@ -1,5 +1,119 @@
 # Changelog
 
+## [0.14.0](https://github.com/rigerc/wrtag/compare/v0.19.0...v0.14.0) (2025-11-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* **wrtag:** rename `tag-weight` option to `diff-weight`
+* **wrtag:** tag mainly as `BARCODE` instead of `UPC`, use `Barcode` in research-links
+* **wrtag:** clear unknown tags by default
+* **ci:** upgrade to go1.24, bump golangci-lint
+* **pathformat:** tidy up keys
+* rebrand to mrtag
+* rename `wrtagsync` -> `wrtag sync`
+* **wrtagweb:** replace bolt with sqlite
+
+### Features
+
+* **ci:** add binaries ([dcf0424](https://github.com/rigerc/wrtag/commit/dcf042458978ec0743e79b8b43abb0759e61ab49))
+* **ci:** add errcheck ([6ff44e1](https://github.com/rigerc/wrtag/commit/6ff44e1d17c119152b2b4730aeb3d46e7905cc12))
+* **ci:** add more linters ([69f2c82](https://github.com/rigerc/wrtag/commit/69f2c8200217c88e98a27f414b720abbf325fb88))
+* **ci:** cache docker builds ([8f2a5c4](https://github.com/rigerc/wrtag/commit/8f2a5c4c1b326207aeb283402b138beaa658340a))
+* **ci:** don't use qemu for multi platform builds ([b4b90c0](https://github.com/rigerc/wrtag/commit/b4b90c08eeedcd500c7a0961759d4b9798cb1e81))
+* **ci:** faster binary build ([696eb83](https://github.com/rigerc/wrtag/commit/696eb838bdd2a5608359a475faa80f3c28c740e8))
+* **ci:** upgrade to go1.24, bump golangci-lint ([1c8c8e0](https://github.com/rigerc/wrtag/commit/1c8c8e0fa55aed786b23d34dcf1b4f498e0dff95))
+* **ci:** use matrix to build binaries ([938ae37](https://github.com/rigerc/wrtag/commit/938ae379056646a4f3801405d136b7d8273e34f1))
+* **ci:** use native gha cache ([9795428](https://github.com/rigerc/wrtag/commit/97954283ba4e4bd195e3364e972cf44e98520c87))
+* **clientutil:** log with ctx ([814372a](https://github.com/rigerc/wrtag/commit/814372ac47c3e8847634d21e3bdaab753499cf96))
+* **config:** add discogs research-link example ([f3ddfef](https://github.com/rigerc/wrtag/commit/f3ddfefd3478155499da2b2394905361f2a02503))
+* **config:** add more research-link examples ([94ae218](https://github.com/rigerc/wrtag/commit/94ae2185b0bd35418bdd402bf6f97cbb224b0732))
+* **contrib:** add shell completions for fish and bash ([#145](https://github.com/rigerc/wrtag/issues/145)) ([258e17e](https://github.com/rigerc/wrtag/commit/258e17ed1685a74d11ac74f952f094ef72506ecf)), closes [#140](https://github.com/rigerc/wrtag/issues/140)
+* **docker:** include essentia extractor binary in container image ([#162](https://github.com/rigerc/wrtag/issues/162)) ([4aa435e](https://github.com/rigerc/wrtag/commit/4aa435e8b332507a8e17f4a4caf6208cd9e24fe5))
+* **docker:** support PGID/PUID env vars ([4099679](https://github.com/rigerc/wrtag/commit/4099679a4bcbf74eb6dfab5666f56464e308fe96)), closes [#147](https://github.com/rigerc/wrtag/issues/147)
+* **lyrics:** add LRCLib support ([2879598](https://github.com/rigerc/wrtag/commit/2879598cb73fc3f1d01ce6d4258dc8610add770e)), closes [#166](https://github.com/rigerc/wrtag/issues/166)
+* **lyrics:** esc `&` in for Genius ([2bd0b3e](https://github.com/rigerc/wrtag/commit/2bd0b3e698bbf0f19c607a5d804ad15679260036))
+* **metadata:** add image properties, image-read, image-write, image-clear ([f50eb9f](https://github.com/rigerc/wrtag/commit/f50eb9fa5fe86137c649a9bfcac97d2ce19e77de))
+* **metadata:** buffer stdout for `read` ([8911983](https://github.com/rigerc/wrtag/commit/89119832a6a9d21137f7ea666b471295566433ee))
+* **metadata:** print keys in order they came ([7abac5d](https://github.com/rigerc/wrtag/commit/7abac5d507a135ef1e69fbc92e22ffebaeef68a7))
+* **musicbrainz:** boost track num and label info search terms when searching ([18e27e3](https://github.com/rigerc/wrtag/commit/18e27e3a6dca25729a08fd46dd8f7d34e3ed8a05))
+* **musicbrainz:** compilation if VA or compilation secondary types ([c38bc59](https://github.com/rigerc/wrtag/commit/c38bc5906b15ed191f99895c2a7d6e403b980e63))
+* **musicdesc:** new addon for key and bpm detection ([53b79bd](https://github.com/rigerc/wrtag/commit/53b79bdb08dd4addb09aad740bfebe925cca16f2)), closes [#110](https://github.com/rigerc/wrtag/issues/110) [#109](https://github.com/rigerc/wrtag/issues/109)
+* **normtag:** add more alternatives ([19bf034](https://github.com/rigerc/wrtag/commit/19bf03481e5e4c5322fd1ca508c9f4b23228d81a))
+* **notifications:** add `suppress-after-action` notification-uri config option ([31beddc](https://github.com/rigerc/wrtag/commit/31beddccee021c883a3285765bae24d4512a26c6))
+* **pathformat:** add `artistsSort` and `artistsSortString` helpers ([6f63702](https://github.com/rigerc/wrtag/commit/6f63702fefe02b79e017b9eaadc8053d985b744a))
+* **pathformat:** add `safepathUnicode` function ([#160](https://github.com/rigerc/wrtag/issues/160)) ([f2bd09c](https://github.com/rigerc/wrtag/commit/f2bd09c260c1aede172944c2e1f717e03506bddf))
+* **pathformat:** add `the` helper ([b53bccc](https://github.com/rigerc/wrtag/commit/b53bccc10027bfb9f54282540e40bc1f3eef76c3)), closes [#123](https://github.com/rigerc/wrtag/issues/123)
+* **pathformat:** set index to 0 for pregap tracks ([4f9c2c2](https://github.com/rigerc/wrtag/commit/4f9c2c2369ea450cf50819ac87cf6c1e5c130cfa)), closes [#124](https://github.com/rigerc/wrtag/issues/124)
+* rebrand back to wrtag ([2a9c836](https://github.com/rigerc/wrtag/commit/2a9c836120a3ef360ec7c7ed2c138d7f5f6f8e8b))
+* rebrand to mrtag ([a8399af](https://github.com/rigerc/wrtag/commit/a8399af5452f037689d1f66ad57907541c1d9a93)), closes [#58](https://github.com/rigerc/wrtag/issues/58)
+* rename `wrtagsync` -&gt; `wrtag sync` ([a3c097f](https://github.com/rigerc/wrtag/commit/a3c097f1197d4e63780c0b66be08a8c3ff7c379c))
+* **tagmap:** also keep ReplayGain range settings, and INITIALKEY ([7afda34](https://github.com/rigerc/wrtag/commit/7afda3446e4527539e834918a86c37a3338280a6))
+* **tagmap:** write "MUSICBRAINZ_RELEASETRACKID" tag ([4f13881](https://github.com/rigerc/wrtag/commit/4f13881adb7779eb08a5778f13f5cb6c69ade7b5))
+* **tagmap:** write "RELEASETYPE" tag ([c19bd5d](https://github.com/rigerc/wrtag/commit/c19bd5d270d7ef24dd067af2a2b60dd01d93f0d4))
+* **tags:** add more known tags and variants ([9fb9f2a](https://github.com/rigerc/wrtag/commit/9fb9f2ae2795791dc6fbfe91cdd41f6dcdeb5299))
+* **tags:** expose ReadImage ([d759d9b](https://github.com/rigerc/wrtag/commit/d759d9bc343f0ed6a29faee7144bb61940f45d10))
+* use go.senan.xyz/taglib-wasm ([5318e65](https://github.com/rigerc/wrtag/commit/5318e65c4a1ebb386e442c2056eae9304b5ffaab))
+* **wrtag:** add `tag-config` option ([97acec5](https://github.com/rigerc/wrtag/commit/97acec5819607cb19b19f168ebadcb636f2abdff)), closes [#120](https://github.com/rigerc/wrtag/issues/120) [#107](https://github.com/rigerc/wrtag/issues/107)
+* **wrtag:** add a `reflink` operation ([343f601](https://github.com/rigerc/wrtag/commit/343f6019f579b47be7575ff18bf120b3a0b1eb04)), closes [#87](https://github.com/rigerc/wrtag/issues/87)
+* **wrtag:** add some more tests ([b96b53f](https://github.com/rigerc/wrtag/commit/b96b53fe021695158e462ad4ac6a0234532d877a))
+* **wrtag:** adjust tag match to account for larger left side ([0de5233](https://github.com/rigerc/wrtag/commit/0de52339085dd012551be8e9a3676e4542a089f9))
+* **wrtag:** avoid more IO when no tag changes ([b4da400](https://github.com/rigerc/wrtag/commit/b4da4000fa4c597cf4fd1bd5c9771260bcb953ca))
+* **wrtag:** clear unknown tags by default ([0c94f10](https://github.com/rigerc/wrtag/commit/0c94f100bf75e9e22a4a5219198af5482c67c2df)), closes [#115](https://github.com/rigerc/wrtag/issues/115)
+* **wrtag:** log all started subprocesses ([c9d5065](https://github.com/rigerc/wrtag/commit/c9d5065e6b58a2f49dc2fcee62294ba592b634c0))
+* **wrtag:** rename `tag-weight` option to `diff-weight` ([a25e256](https://github.com/rigerc/wrtag/commit/a25e256a061fe3bb2bb864cef59e89fd6a44ef3f))
+* **wrtag:** support atomic copies ([77767dc](https://github.com/rigerc/wrtag/commit/77767dc741d79302254af871895ba46b5f1a2d7a))
+* **wrtag:** support symlinks in operations and path-format root ([1c9b33b](https://github.com/rigerc/wrtag/commit/1c9b33b86f32e95205caf53bb3a78e48ce0d8ca6)), closes [#149](https://github.com/rigerc/wrtag/issues/149) [#141](https://github.com/rigerc/wrtag/issues/141)
+* **wrtag:** support using english locale paths in path-format ([62b776e](https://github.com/rigerc/wrtag/commit/62b776e5ff42c5f963fc53ae2a08f6938f024277)), closes [#85](https://github.com/rigerc/wrtag/issues/85)
+* **wrtag:** tag mainly as `BARCODE` instead of `UPC`, use `Barcode` in research-links ([e263dd6](https://github.com/rigerc/wrtag/commit/e263dd633970a6eebb31a23cc88de8bfea179aad)), closes [#121](https://github.com/rigerc/wrtag/issues/121)
+* **wrtag:** validate situations where tracks can't be sorted before matching ([20c616a](https://github.com/rigerc/wrtag/commit/20c616a13e5f112a88e42c724f545534a2279393)), closes [#52](https://github.com/rigerc/wrtag/issues/52)
+* **wrtagweb:** add pprof handlers ([82f87b3](https://github.com/rigerc/wrtag/commit/82f87b3836fdd2e0d4da418d366e21ac08aa13c9))
+* **wrtagweb:** autocomplete manual import dirs ([9783d7a](https://github.com/rigerc/wrtag/commit/9783d7a57a79fbf2d411dc22b269568df513e994)), closes [#151](https://github.com/rigerc/wrtag/issues/151)
+* **wrtagweb:** enforce db path ([a6bf28f](https://github.com/rigerc/wrtag/commit/a6bf28f8ae4a8917abc24ee34d966b519d1a8358))
+* **wrtagweb:** process user actions in job loop ([b66dcb3](https://github.com/rigerc/wrtag/commit/b66dcb3668822fc5ff188d29ec5bc00d1a623151))
+* **wrtagweb:** process user actions in job loop ([9ec8b67](https://github.com/rigerc/wrtag/commit/9ec8b67198af43fd89d015cfd9470b6d80df9501))
+* **wrtagweb:** record job update time ([57b6276](https://github.com/rigerc/wrtag/commit/57b62769b52b2f5eacf680bac7729b092643d9b9))
+* **wrtagweb:** replace bolt with sqlite ([26e6889](https://github.com/rigerc/wrtag/commit/26e688999e252ca5c15eb4c14433319e4b0ae195))
+* **wrtagweb:** restart old in-progress jobs on startup ([173fad9](https://github.com/rigerc/wrtag/commit/173fad9bebaac432dd9ee588a38ff45004cbe00b))
+* **wrtagweb:** set manual import form width to 500px by default ([#102](https://github.com/rigerc/wrtag/issues/102)) ([d2ae6a1](https://github.com/rigerc/wrtag/commit/d2ae6a1daa9c54c81e9f2a99fec8f02404649480))
+* **wrtag:** write `COMPOSER` tag ([1dad865](https://github.com/rigerc/wrtag/commit/1dad865699a635c402c39e21c8aa9d865ae25627))
+* **wrtag:** write `ISRC` tag ([5004569](https://github.com/rigerc/wrtag/commit/5004569b191e965b19c1abf31ddcf103b2614e37))
+* **wrtag:** write REMIXER/REMIXERS tags ([238ef45](https://github.com/rigerc/wrtag/commit/238ef451e9a5ad6a5d3f2a68b2ed820def55b592)), closes [#77](https://github.com/rigerc/wrtag/issues/77)
+
+
+### Bug Fixes
+
+* **ci:** don't use hardcoded binary names ([c9a80b2](https://github.com/rigerc/wrtag/commit/c9a80b2be3d4f2ee38e932169ab2701fd6983584))
+* **ci:** upload binaries ([9d8d9b3](https://github.com/rigerc/wrtag/commit/9d8d9b324d967890f1823463849169ef66fe21c4))
+* **ci:** upload binaries to output tag ([c0b5677](https://github.com/rigerc/wrtag/commit/c0b5677b9b077cc2c710d5712f2b3531a377bf4f))
+* **coverparse:** correctly prioritize filenames with keywords ([#143](https://github.com/rigerc/wrtag/issues/143)) ([01f0e83](https://github.com/rigerc/wrtag/commit/01f0e839f9a2bedb661a78026a295fdd49aa81a3))
+* **coverparse:** handle out of range integers ([d3da33c](https://github.com/rigerc/wrtag/commit/d3da33c5321cd2b2d17baa9ce568e0f8ef3412bb))
+* **docker:** fix `chown` calls in `docker-entry` ([#163](https://github.com/rigerc/wrtag/issues/163)) ([535a93e](https://github.com/rigerc/wrtag/commit/535a93e34984c9d44218d52600dc014f107771b4))
+* **lyrics:** add more query replacements ([33a2787](https://github.com/rigerc/wrtag/commit/33a27876ae95b57f48244f1e4bedd62caffa7a92))
+* **lyrics:** don't try recurse a null node ([6f7a173](https://github.com/rigerc/wrtag/commit/6f7a173f67a870a041e0cf38e552704bd902afb6)), closes [#153](https://github.com/rigerc/wrtag/issues/153)
+* **lyrics:** handle track not found vs track has no lyrics ([08db046](https://github.com/rigerc/wrtag/commit/08db046f652919f3b3b443aa5e8ea236c43118d5))
+* **lyrics:** pass rate limit lyric sources ([a29d477](https://github.com/rigerc/wrtag/commit/a29d4776a573ecf31b729a625b5d17cc94a9c6c7))
+* **lyrics:** write to file not lyrics string ([47d83a4](https://github.com/rigerc/wrtag/commit/47d83a42b7b74d96b9c22b2c078d90766df19957)), closes [#81](https://github.com/rigerc/wrtag/issues/81)
+* **metadata:** adjust help output ([76568c5](https://github.com/rigerc/wrtag/commit/76568c5ed8382647a3ede5ce9421c85b8cd4a33c))
+* **metadata:** make image-clear clear all images not first index ([5fee9b1](https://github.com/rigerc/wrtag/commit/5fee9b15100a22c474c038f7e37c35e9c0b110fc))
+* **musicbrainz:** filter Blu-ray media in FlatTracks ([#174](https://github.com/rigerc/wrtag/issues/174)) ([0b89f40](https://github.com/rigerc/wrtag/commit/0b89f403c0e46bcf7b11b6bfef8f202835692e6a))
+* **tag:** bump go-taglib-wasm ([cdfb74c](https://github.com/rigerc/wrtag/commit/cdfb74ca3453139ec471c236b244c56c353a57ab))
+* **tagmap:** normalise empty vs null tags ([676d640](https://github.com/rigerc/wrtag/commit/676d6404176cb4708a8c85d9a912005fb18550c1))
+* **wrtag:** clamp score to 0-100 ([3f587d4](https://github.com/rigerc/wrtag/commit/3f587d44f87f879a4c44e9de58229958078037df))
+* **wrtag:** don't wipe unknown metadata ([1a9f99e](https://github.com/rigerc/wrtag/commit/1a9f99ea3a0c267323bcd7ef3b90b9a3d5950779))
+* **wrtag:** fix windows tag read/write ([e5c9013](https://github.com/rigerc/wrtag/commit/e5c901365d3c2539b948193868788ea74152c2ae))
+* **wrtag:** handle case where src dirs have string prefix of path-format root ([2162391](https://github.com/rigerc/wrtag/commit/2162391cec28e43a5089dc86d5b4695e3e5d0ae3)), closes [#135](https://github.com/rigerc/wrtag/issues/135)
+* **wrtag:** remove `TRACKC` tag alternative ([d1d41c5](https://github.com/rigerc/wrtag/commit/d1d41c5e9b9f8bb28811fdbcf43034b1b99c9491))
+* **wrtag:** render space in diff table ([3db7fce](https://github.com/rigerc/wrtag/commit/3db7fceaf10b741e4b1a8e15066707a96805a33c))
+* **wrtagweb:** horizonal overflow on mobile ([0dc263b](https://github.com/rigerc/wrtag/commit/0dc263b959a32c7305201f8dffc9bcf9a1aba6e2)), closes [#106](https://github.com/rigerc/wrtag/issues/106)
+* **wrtagweb:** return error in template execute ([07d1b31](https://github.com/rigerc/wrtag/commit/07d1b31e5bd117e1a50e332e374d47b91c3ef469))
+* **wrtagweb:** wrap multiple research-links ([b98a1e2](https://github.com/rigerc/wrtag/commit/b98a1e29e0a67733ed06c82a48bbbe46f51f575c))
+
+
+### Code Refactoring
+
+* **pathformat:** tidy up keys ([58ea3a8](https://github.com/rigerc/wrtag/commit/58ea3a810fd98856c68d53d591a9970c561c6fbd)), closes [#80](https://github.com/rigerc/wrtag/issues/80)
+
 ## [0.19.0](https://github.com/sentriz/wrtag/compare/v0.18.0...v0.19.0) (2025-10-09)
 
 
